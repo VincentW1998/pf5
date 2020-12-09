@@ -17,6 +17,7 @@ let action_what () = Printf.printf "%s\n" usage; exit 0
 
 let cmdline_options = [
 ("--what" , Arg.Unit action_what, "description");
+("-f", Arg.String (read_dir), "lit le fichier de sauvegarde");
 ]
 
 let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
@@ -28,6 +29,9 @@ let main () =
 (** On ne lance ce main que dans le cas d'un programme autonome
     (c'est-à-dire que l'on est pas dans un "toplevel" ocaml interactif).
     Sinon c'est au programmeur de lancer ce qu'il veut *)
+let read_dir dir =
+  let _ = try open_out dir with Sys_error printf("Permission denied \n");
+
 
 let () = if not !Sys.interactive then main ()
 
