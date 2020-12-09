@@ -15,3 +15,31 @@ type position = {
 }
 
 (** Put here any type and function signatures concerning turtle *)
+
+(* New stack, initially empty *)
+val stackOfPos : position Stack.t
+
+(* Polar cordinate to cartesian for axe X *)
+val cordinateX : position -> float -> int
+
+(* Polar cordinate to cartesian for axe Y *)
+val cordinateY : position -> float -> int
+
+(* Polar cordinate to cartesian for axe X and Y *)
+val cordinateXY : position -> float -> int * int
+
+(* draw line with Graphics.lineto *)
+val draw_line : position -> float -> position
+
+(* move the current point *)
+val move_point : position -> float -> position
+
+(* push pos to Stack *)
+val pushToStack : position -> position
+
+(* remove pos from Stack *)
+val popStack : 'a -> position
+
+(* Interpret Turtle command to graphics command *)
+val turtleToGraphics : command -> position -> position
+
