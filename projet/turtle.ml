@@ -44,19 +44,30 @@ let cordinateXY p length =
     (x1, y1);;
 
 (* draw line with Graphics.lineto*)
-let draw_line pos a = 
-  let (x1, y1)  = cordinateXY pos a in lineto x1 y1;;
-
+let draw_line pos taille = 
+  let (x1, y1)  = cordinateXY pos taille in  ();
+  {x = (float_of_int x1); y = (float_of_int y1); a = pos.a};;
 
 (* move the current point *)
-let move_point pos a = 
-  let (x1, y1) = cordinateXY pos a in moveto x1 y1
+let move_point pos a =
+  let (x1, y1) = cordinateXY pos a in moveto x1 y1;
+  {x = (float_of_int x1); y = (float_of_int y1); a = pos.a};;
+
+let pushToStack pos = push pos stackOfPos; pos
+
+let popStack pos = pop stackOfPos
+
 
 (* Interpret Turtle command to graphics command*)
 let turtleToGraphics command pos = match command with
   | Line a ->  draw_line pos (float_of_int a)
   | Move a ->  move_point pos (float_of_int a)
-  | Turn a ->  currentPos.a + a
-  | Store -> push pos stackOfPos
-  | Restore -> pop stackOfPos
+  | Turn ang ->  {x = pos.x; y = pos.y; a = pos.a + ang}
+  | Store -> pushToStack pos
+  | Restore -> popStack pos
+
+
+
+
+
 
