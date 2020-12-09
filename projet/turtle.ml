@@ -24,18 +24,18 @@ let stackOfPos = create()
 let currentPos = 
   let (x0, y0) = current_point() in 
     {
-      x = x0;
-      y = y0;
+      x = float_of_int x0;
+      y = float_of_int y0;
       a = 0;
     }
 
 (* Polar cordinate to cartesian for axe X*)
 let cordinateX p length = 
-  p.x +. (length  *. cos (float_of_int p.a))
+  int_of_float (p.x +. (length  *. cos (float_of_int p.a)))
 
 (* Polar cordinate to cartesian for axe Y*)
 let cordinateY p length = 
-  p.y +. (length *. sin (float_of_int p.a))
+  int_of_float (p.y +. (length *. sin (float_of_int p.a)))
 
 (* Polar cordinate to cartesian for axe X and Y*)
 let cordinateXY p length =
@@ -51,7 +51,6 @@ let draw_line pos a =
 (* move the current point *)
 let move_point pos a = 
   let (x1, y1) = cordinateXY pos a in moveto x1 y1
-
 
 (* Interpret Turtle command to graphics command*)
 let turtleToGraphics command pos = match command with
