@@ -20,30 +20,21 @@ type position = {
 let stackOfPos = create()
 
 
-(*The current position*)
-let currentPos = 
-  let (x0, y0) = current_point() in 
-    {
-      x = float_of_int x0;
-      y = float_of_int y0;
-      a = 0;
-    }
-
-(* Polar cordinate to cartesian for axe X*)
+(* Polar cordinate to cartesian for axe X *)
 let cordinateX p length = 
   int_of_float (p.x +. (length  *. cos (float_of_int p.a)))
 
-(* Polar cordinate to cartesian for axe Y*)
+(* Polar cordinate to cartesian for axe Y *)
 let cordinateY p length = 
   int_of_float (p.y +. (length *. sin (float_of_int p.a)))
 
-(* Polar cordinate to cartesian for axe X and Y*)
+(* Polar cordinate to cartesian for axe X and Y *)
 let cordinateXY p length =
   let x1 = cordinateX p length and
     y1 = cordinateY p length in
     (x1, y1);;
 
-(* draw line with Graphics.lineto*)
+(* draw line with Graphics.lineto *)
 let draw_line pos taille = 
   let (x1, y1)  = cordinateXY pos taille in  ();
   {x = (float_of_int x1); y = (float_of_int y1); a = pos.a};;
@@ -53,12 +44,15 @@ let move_point pos a =
   let (x1, y1) = cordinateXY pos a in moveto x1 y1;
   {x = (float_of_int x1); y = (float_of_int y1); a = pos.a};;
 
+(*push pos to Stack *)
 let pushToStack pos = push pos stackOfPos; pos
 
+
+(*remove pos from Stack *)
 let popStack pos = pop stackOfPos
 
 
-(* Interpret Turtle command to graphics command*)
+(* Interpret Turtle command to graphics command *)
 let turtleToGraphics command pos = match command with
   | Line a ->  draw_line pos (float_of_int a)
   | Move a ->  move_point pos (float_of_int a)
