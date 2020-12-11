@@ -1,4 +1,4 @@
-#!ocaml -init
+#! ocaml -init
 
 (* Ce script lance un toplevel OCaml avec tous les modules
    de votre projet sauf main.ml.
@@ -13,10 +13,9 @@
 #load "lsystems.cma";;
 let () = print_string "Lsystems modules loaded.\n\n"
 open Lsystems
-
+open Graphics
 (* Si vous le souhaitez: *)
-(* #load "graphics.cma" *)
-(* #use "main.ml" *)
-
+#load "graphics.cma"
+#use "turtle.ml"
 (* NB : with a recent dune and utop, just do instead: dune utop
    Or consider https://dune.readthedocs.io/en/stable/toplevel-integration.html *)

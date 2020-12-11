@@ -19,14 +19,26 @@ type position = {
 (* New stack, initially empty *)
 let stackOfPos = create()
 
+(** constant pi **)
+let pi = 4.*.atan(1.)
+
+(** function change degree to rad**)
+let degreeToRad = (fun x -> (float_of_int x) *. (pi /. 180.))
+
+(** get the sign of x and add this sigh to 0.5**)
+let getSign = (fun x -> if x < 0. then (-0.5) else 0.5)
+
+(** round the float **)
+let roundFloat x =
+  int_of_float (x +. getSign x)
 
 (* Polar cordinate to cartesian for axe X *)
 let cordinateX p length = 
-  int_of_float (p.x +. (length  *. cos (float_of_int p.a)))
+   int_of_float (p.x) + roundFloat(length  *. cos (degreeToRad p.a))
 
 (* Polar cordinate to cartesian for axe Y *)
 let cordinateY p length = 
-  int_of_float (p.y +. (length *. sin (float_of_int p.a)))
+  int_of_float (p.y) + roundFloat(length *. sin (degreeToRad p.a))
 
 (* Polar cordinate to cartesian for axe X and Y *)
 let cordinateXY p length =
@@ -36,7 +48,7 @@ let cordinateXY p length =
 
 (* draw line with Graphics.lineto *)
 let draw_line pos taille = 
-  let (x1, y1)  = cordinateXY pos taille in  ();
+  let (x1, y1)  = cordinateXY pos taille in lineto x1 y1;
   {x = (float_of_int x1); y = (float_of_int y1); a = pos.a};;
 
 (* move the current point *)
@@ -51,17 +63,31 @@ let pushToStack pos = push pos stackOfPos; pos
 (*remove pos from Stack *)
 let popStack pos = pop stackOfPos
 
+(**
+let a = Line 2
+let p = Turn 60
+let m = Turn (-60)
+
+
+let rec vonKoch l i =
+  let rec loop l acc =
+    match l with
+    |[] -> acc
+    | x :: l' -> if(x = a) then  loop l' (acc @ [a;m;a;p;p;a;m;a]) else
+    loop l' (acc @ [x]) in
+  if (i=1) then loop l [] else vonKoch (loop l []) (i-1);;
+
+
+let testAbsolu n = 
+  vonKoch2 [a;p;p;a;p;p;a] n **)
 
 (* Interpret Turtle command to graphics command *)
-let turtleToGraphics command pos = match command with
-  | Line a ->  draw_line pos (float_of_int a)
-  | Move a ->  move_point pos (float_of_int a)
-  | Turn ang ->  {x = pos.x; y = pos.y; a = pos.a + ang}
-  | Store -> pushToStack pos
-  | Restore -> popStack pos
-
-
-
-
-
+let rec turtleToGraphics command pos = match command with
+  | [] -> pos
+  | Line a :: l-> turtleToGraphics l  (draw_line pos (float_of_int a))
+  | Move a :: l->  turtleToGraphics l (move_point pos (float_of_int a))
+  | Turn ang :: l-> turtleToGraphics l
+  ({x = pos.x; y = pos.y; a = pos.a + ang})
+  | Store :: l->  turtleToGraphics l (pushToStack pos)
+  | Restore :: l-> turtleToGraphics l (popStack pos)
 
