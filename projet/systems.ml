@@ -104,9 +104,9 @@ let rec rewrite_loop  c lr = match lr with
   | (a, b) :: t-> if a = c then  stringToWord b else rewrite_loop c t;;
 
 
-let rewrite c =
+let rewrite =
   let lr = listPair (getRules()) in
-  rewrite_loop c lr
+  (fun x -> rewrite_loop x lr)
 
 
 let charToCommand i = function
@@ -126,9 +126,9 @@ let rec inter_loop  c li= match li with
         charToCommand i firstChar else inter_loop c t
 
 
-let inter c =
+let inter =
   let li = listPair (getInter()) in
-  inter_loop c li
+  (fun x -> inter_loop x li)
 
 
 
