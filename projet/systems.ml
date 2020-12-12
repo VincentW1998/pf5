@@ -91,11 +91,12 @@ let pairCharString str =
   let sub = String.sub str 2 (String.length str - 2) in
   (c, sub)
 
+
 let rec listPair_loop accu = function
   | [] -> (List.rev accu)
   | h :: t -> listPair_loop (pairCharString h :: accu) t
 
-
+(** return list of (char * string) **)
 let listPair listStr = listPair_loop [] listStr
 
 
@@ -103,12 +104,12 @@ let rec rewrite_loop  c lr = match lr with
   | [] -> raise (failwith "votre symbole n'est pas dans le domaine")
   | (a, b) :: t-> if a = c then  stringToWord b else rewrite_loop c t;;
 
-
-let rewrite =
+(**function rewrite 's word with rules**)
+let rewriteFunc =
   let lr = listPair (getRules()) in
   (fun x -> rewrite_loop x lr)
 
-
+(** return a list of Turtle.command **)
 let charToCommand i = function
   |'L' -> [Line i]
   |'M' -> [Move i]
@@ -126,10 +127,15 @@ let rec inter_loop  c li= match li with
         charToCommand i firstChar else inter_loop c t
 
 
-let inter =
+(**return a list of Turtle.command from a char **)
+let interFunc =
   let li = listPair (getInter()) in
   (fun x -> inter_loop x li)
 
-
+(**create a Lsys from a string **)
+let createLsys ax = {
+  axiom = stringToWord ax;
+  rules = rewriteFunc;
+  interp = interFunc }
 
 
