@@ -19,6 +19,15 @@ type position = {
 (* New stack, initially empty *)
 val stackOfPos : position Stack.t
 
+(** get the sign of x and add this sigh to 0.5**)
+val getSign : float -> float
+
+(** function change degree to rad**)
+val degreeToRad : int -> float
+
+(** round the float **)
+val roundFloat : float -> int
+
 (* Polar cordinate to cartesian for axe X *)
 val cordinateX : position -> float -> int
 
@@ -40,6 +49,6 @@ val pushToStack : position -> position
 (* remove pos from Stack *)
 val popStack : 'a -> position
 
-(* Interpret Turtle command to graphics command *)
-val turtleToGraphics : command -> position -> position
 
+(* Interpret Turtle command to graphics command *)
+val turtleToGraphics : command list -> position -> position
