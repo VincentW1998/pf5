@@ -1,3 +1,5 @@
+val lsys : string list ref 
+
 val read_file : string -> unit
 
 val getAxiome : unit -> string
