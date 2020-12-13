@@ -7,5 +7,3 @@ val getAxiome : unit -> string
 val getRules : unit -> string list
 
 val getInter : unit -> string list
-
-val nameFile : unit -> string
