@@ -28,18 +28,25 @@ let cmdline_options = [
 
 let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
-  let trace () =
-    let niter = substitution (createWord (explode (getAxiome()))) 6 in
-    let lcmd = interWord(niter) in
-    clear_graph();
+(*let askUser () =
+  print_string "type an integer nth iteration : ";
+  int_of_string (read_line())*)
+
+
+let trace () =
+  let n = nthIter() in
+  let niter = substitution (createWord (explode (getAxiome()))) n in
+  let lcmd = interWord(niter) in
+  clear_graph();
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)
+
 
 (* keyStrokes listners  *)
  let rec loop ()=
   let event = wait_next_event [Key_pressed] in
   if event.keypressed
   then match event.key with
-    |'o' -> print_string "Type filename : "; let file = read_line() in read_file file ; loop()
+    |'o' -> let filename = fileName() in read_file filename ; loop()
     | 't' -> trace();print_string(getAxiome());print_newline() ; loop()
     | 'q'  -> close_graph ()
     | _    -> loop ()
@@ -50,7 +57,7 @@ let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
 let main () =
   Arg.parse cmdline_options extra_arg_action usage;
-  open_graph "";
+  open_graph " 500x500";
   loop ();
   print_string "Bye\n"
 
