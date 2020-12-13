@@ -25,7 +25,7 @@ let pi = 4.*.atan(1.)
 (** function change degree to rad**)
 let degreeToRad = (fun x -> (float_of_int x) *. (pi /. 180.))
 
-(** get the sign of x and add this sigh to 0.5**)
+(** get the sign of x and add this sign to 0.5**)
 let getSign = (fun x -> if x < 0. then (-0.5) else 0.5)
 
 (** round the float **)
@@ -63,23 +63,6 @@ let pushToStack pos = push pos stackOfPos; pos
 (*remove pos from Stack *)
 let popStack pos = pop stackOfPos
 
-(**
-let a = Line 2
-let p = Turn 60
-let m = Turn (-60)
-
-
-let rec vonKoch l i =
-  let rec loop l acc =
-    match l with
-    |[] -> acc
-    | x :: l' -> if(x = a) then  loop l' (acc @ [a;m;a;p;p;a;m;a]) else
-    loop l' (acc @ [x]) in
-  if (i=1) then loop l [] else vonKoch (loop l []) (i-1);;
-
-
-let testAbsolu n = 
-  vonKoch2 [a;p;p;a;p;p;a] n **)
 
 (* Interpret Turtle command to graphics command *)
 let rec turtleToGraphics command pos = match command with

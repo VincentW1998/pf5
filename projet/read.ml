@@ -1,4 +1,5 @@
 open String
+
 let lsys = ref []
 
 (* seperate the file into [axiome;rules;interpretation] then send it to lsys *)
@@ -33,3 +34,11 @@ let getInter () =
   |[] -> failwith ("no file")
   |a :: r :: i :: l' -> String.split_on_char '\n' i
   |_ -> failwith ("read error : Interpretation missing")
+
+
+let nameFile ()=
+  print_string "type a filename : ";
+  read_line()
+
+
+

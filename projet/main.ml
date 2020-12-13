@@ -33,7 +33,7 @@ let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
   let event = wait_next_event [Key_pressed] in
   if event.keypressed
   then match event.key with
-       | 'o' -> read_file "examples/snow.sys"; loop ()
+       | 'o' -> let name = nameFile ()in read_file name; loop ()
        | 'q'  -> close_graph ()
        | _    -> loop ()
   else loop ()

@@ -19,7 +19,7 @@ type position = {
 (* New stack, initially empty *)
 val stackOfPos : position Stack.t
 
-(** get the sign of x and add this sigh to 0.5**)
+(** get the sign of x and add this sign to 0.5**)
 val getSign : float -> float
 
 (** function change degree to rad**)
