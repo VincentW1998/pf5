@@ -34,6 +34,8 @@ let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
   if event.keypressed
   then match event.key with
        | 'o' -> read_file "examples/snow.sys"; loop ()
+       (* | 't' -> let niter = substitution (createWord (getAxiome())) 1 in
+                let lcmd = interWord(n iter) *)
        | 'q'  -> close_graph ()
        | _    -> loop ()
   else loop ()

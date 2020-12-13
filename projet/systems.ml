@@ -56,7 +56,7 @@ let list_of_symb sl = list_of_symb_loop []
 
 
 (** return a list from the first ']' **)
-let rec cutBrackets l n = match l with 
+let rec cutBrackets l n = match l with
   | [] -> l
   | '[' :: t -> cutBrackets t (n+1)
   | ']' :: t -> if n = 0 then t else cutBrackets t (n-1)
@@ -101,7 +101,7 @@ let listPair listStr = listPair_loop [] listStr
 
 
 let rec rewrite_loop  c lr = match lr with
-  | [] -> raise (failwith "votre symbole n'est pas dans le domaine")
+  | [] -> raise Not_found
   | (a, b) :: t-> if a = c then  stringToWord b else rewrite_loop c t;;
 
 (**function rewrite 's word with rules**)
@@ -120,7 +120,7 @@ let charToCommand i = function
 
 
 let rec inter_loop  c li= match li with
-  | [] -> raise (failwith "votre symbole n'est pas dans le domaine")
+  | [] -> []
   | (a, b) :: t -> if a = c then
         let i = int_of_string (String.sub b 1 (String.length b - 1)) in
         let firstChar = String.get b 0 in
@@ -138,4 +138,20 @@ let createLsys ax = {
   rules = rewriteFunc;
   interp = interFunc }
 
+(* apply rules to word once *)
+let rec  substitution_loop word  =
+  match word with
+  |Symb s ->  (try rewriteFunc s with Not_found -> Symb s)
+  |Seq s -> Seq (List.map (substitution_loop) s )
+  |Branch s -> Branch(substitution_loop s)
 
+  (* apply n times rules to the word *)
+let rec substitution word n =
+  if (n > 0) then substitution (substitution_loop word) (n-1) else word
+
+(* interpWord_loop (iter (createWord l) 1) *)
+let rec interpWord_loop word  =
+  match word with
+  |Symb s -> interFunc s
+  |Seq s -> concat(map(interpWord_loop) s)
+  |Branch s -> interpWord_loop s
