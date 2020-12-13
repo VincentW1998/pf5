@@ -1,4 +1,6 @@
 open List
+open Turtle
+open Read
 (** Words, rewrite systems, and rewriting *)
 
 type 's word =
@@ -70,4 +72,70 @@ let rec createWord_loop (accu : 'a list) = function
 
 
 let createWord cl = Seq (createWord_loop [] cl)
+
+(** funtion return 's word from string **)
+let stringToWord str =
+  let s = explode str in
+  createWord s
+
+(** function return axiom from string **)
+let stringToAxiom =
+  let str = getAxiome() in
+  stringToWord str
+
+(** (c, sub)
+ c = first char of string
+ sub = substring **)
+let pairCharString str =
+  let c = String.get str 0 in
+  let sub = String.sub str 2 (String.length str - 2) in
+  (c, sub)
+
+
+let rec listPair_loop accu = function
+  | [] -> (List.rev accu)
+  | h :: t -> listPair_loop (pairCharString h :: accu) t
+
+(** return list of (char * string) **)
+let listPair listStr = listPair_loop [] listStr
+
+
+let rec rewrite_loop  c lr = match lr with
+  | [] -> raise (failwith "votre symbole n'est pas dans le domaine")
+  | (a, b) :: t-> if a = c then  stringToWord b else rewrite_loop c t;;
+
+(**function rewrite 's word with rules**)
+let rewriteFunc =
+  let lr = listPair (getRules()) in
+  (fun x -> rewrite_loop x lr)
+
+(** return a list of Turtle.command **)
+let charToCommand i = function
+  |'L' -> [Line i]
+  |'M' -> [Move i]
+  |'T' -> [Turn i]
+  |'S' -> [Store]
+  |'R' -> [Restore]
+  | _ -> raise (failwith "votre commande n'existe pas")
+
+
+let rec inter_loop  c li= match li with
+  | [] -> raise (failwith "votre symbole n'est pas dans le domaine")
+  | (a, b) :: t -> if a = c then
+        let i = int_of_string (String.sub b 1 (String.length b - 1)) in
+        let firstChar = String.get b 0 in
+        charToCommand i firstChar else inter_loop c t
+
+
+(**return a list of Turtle.command from a char **)
+let interFunc =
+  let li = listPair (getInter()) in
+  (fun x -> inter_loop x li)
+
+(**create a Lsys from a string **)
+let createLsys ax = {
+  axiom = stringToWord ax;
+  rules = rewriteFunc;
+  interp = interFunc }
+
 

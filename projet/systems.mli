@@ -37,4 +37,31 @@ val createWord_loop : char word list -> char list -> char word list
 
 val createWord : char list -> char word
 
+(** funtion return 's word from string **)
+val stringToWord : string -> char word
 
+(** function return axiom from string **)
+val stringToAxiom : char word
+
+val pairCharString : string -> char * string
+
+val listPair_loop :
+  (char * string) list -> string list -> (char * string) list
+
+(** return list of (char * string) **)
+val listPair : string list -> (char * string) list
+
+val rewrite_loop : 'a -> ('a * string) list -> char word
+
+(**function rewrite 's word with rules**)
+val rewriteFunc : char -> char word
+
+(** return a list of Turtle.command **)
+val charToCommand : int -> char -> Turtle.command list
+
+val inter_loop : 'a -> ('a * string) list -> Turtle.command list
+
+(**return a list of Turtle.command from a char **)
+val interFunc : char -> Turtle.command list
+
+val createLsys : string -> char system
