@@ -1,6 +1,6 @@
 open List
 open Turtle
-open Read
+(* open Read *)
 (** Words, rewrite systems, and rewriting *)
 
 type 's word =
@@ -80,7 +80,7 @@ let stringToWord str =
 
 (** function return axiom from string **)
 let stringToAxiom =
-  let str = getAxiome() in
+  let str = Read.getAxiome() in
   stringToWord str
 
 (** (c, sub)
@@ -106,7 +106,7 @@ let rec rewrite_loop  c lr = match lr with
 
 (**function rewrite 's word with rules**)
 let rewriteFunc =
-  let lr = listPair (getRules()) in
+  let lr = listPair (Read.getRules()) in
   (fun x -> rewrite_loop x lr)
 
 (** return a list of Turtle.command **)
@@ -129,7 +129,7 @@ let rec inter_loop  c li= match li with
 
 (**return a list of Turtle.command from a char **)
 let interFunc =
-  let li = listPair (getInter()) in
+  let li = listPair (Read.getInter()) in
   (fun x -> inter_loop x li)
 
 (**create a Lsys from a string **)
@@ -150,8 +150,8 @@ let rec substitution word n =
   if (n > 0) then substitution (substitution_loop word) (n-1) else word
 
 (* interpWord_loop (iter (createWord l) 1) *)
-let rec interpWord_loop word  =
+let rec interWord word  =
   match word with
   |Symb s -> interFunc s
-  |Seq s -> concat(map(interpWord_loop) s)
-  |Branch s -> interpWord_loop s
+  |Seq s -> concat(map(interWord) s)
+  |Branch s -> interWord s

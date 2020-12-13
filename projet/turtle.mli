@@ -51,4 +51,4 @@ val popStack : 'a -> position
 
 
 (* Interpret Turtle command to graphics command *)
-val turtleToGraphics : command list -> position -> position
+val turtleToGraphics : command list -> position -> unit

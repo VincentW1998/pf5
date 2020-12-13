@@ -28,17 +28,25 @@ let cmdline_options = [
 
 let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
+  let trace () =
+    let niter = substitution (createWord (explode (getAxiome()))) 4 in
+    let lcmd = interWord(niter) in
+    clear_graph();
+  turtleToGraphics lcmd (move_point ({x = 200.; y = 200.; a = (-45)}) 0.)
+
 (* keyStrokes listners  *)
  let rec loop ()=
   let event = wait_next_event [Key_pressed] in
   if event.keypressed
   then match event.key with
-       | 'o' -> read_file "examples/snow.sys"; loop ()
-       (* | 't' -> let niter = substitution (createWord (getAxiome())) 1 in
-                let lcmd = interWord(n iter) *)
-       | 'q'  -> close_graph ()
-       | _    -> loop ()
+    |'o' -> print_string "Type filename : "; let file = read_line() in read_file file ; loop()
+    | 't' -> trace();print_string(getAxiome());print_newline() ; loop()
+    | 'q'  -> close_graph ()
+    | _    -> loop ()
   else loop ()
+
+
+
 
 let main () =
   Arg.parse cmdline_options extra_arg_action usage;
