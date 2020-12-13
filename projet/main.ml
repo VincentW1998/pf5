@@ -6,8 +6,6 @@ open Printf
 open Read
 
 
-
-
 (** Gestion des arguments de la ligne de commande.
     Nous suggérons l'utilisation du module Arg
     http://caml.inria.fr/pub/docs/manual-ocaml/libref/Arg.html
@@ -18,25 +16,25 @@ let usage = (* Entete du message d'aide pour --help *)
 
 let action_what () = Printf.printf "%s\n" usage; exit 0
 
-
-
-
 let cmdline_options = [
-("--what" , Arg.Unit action_what, "description");
-(* ("-f", Arg.String (read_file), "lit le fichier de sauvegarde"); *)
+("--what" , Arg.Unit action_what, "description")
 ]
 
 let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
-(*let askUser () =
-  print_string "type an integer nth iteration : ";
-  int_of_string (read_line())*)
 
-
-let trace () =
+(*let trace () =
   let n = nthIter() in
   let niter = substitution (createWord (explode (getAxiome()))) n in
   let lcmd = interWord(niter) in
+  clear_graph();
+  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)*)
+
+let trace () =
+  let n = nthIter() in
+  let niter = substitution2 (getRules())
+              (createWord (explode (getAxiome()))) n in
+  let lcmd = interWord2 (getInter()) (niter) in
   clear_graph();
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)
 
@@ -48,6 +46,7 @@ let trace () =
   then match event.key with
     |'o' -> let filename = fileName() in read_file filename ; loop()
     | 't' -> trace();print_string(getAxiome());print_newline() ; loop()
+    | 'c' -> clear_graph(); loop()
     | 'q'  -> close_graph ()
     | _    -> loop ()
   else loop ()
