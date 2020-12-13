@@ -1,7 +1,6 @@
 open List
 open Turtle
-open Read
-
+(* open Read *)
 (** Words, rewrite systems, and rewriting *)
 
 type 's word =
@@ -57,7 +56,7 @@ let list_of_symb sl = list_of_symb_loop []
 
 
 (** return a list from the first ']' **)
-let rec cutBrackets l n = match l with 
+let rec cutBrackets l n = match l with
   | [] -> l
   | '[' :: t -> cutBrackets t (n+1)
   | ']' :: t -> if n = 0 then t else cutBrackets t (n-1)
@@ -81,7 +80,7 @@ let stringToWord str =
 
 (** function return axiom from string **)
 let stringToAxiom =
-  let str = getAxiome() in
+  let str = Read.getAxiome() in
   stringToWord str
 
 (** (c, sub)
@@ -102,12 +101,12 @@ let listPair listStr = listPair_loop [] listStr
 
 
 let rec rewrite_loop  c lr = match lr with
-  | [] -> raise (failwith "votre symbole n'est pas dans le domaine")
+  | [] -> raise Not_found
   | (a, b) :: t-> if a = c then  stringToWord b else rewrite_loop c t;;
 
 (**function rewrite 's word with rules**)
 let rewriteFunc =
-  let lr = listPair (getRules()) in
+  let lr = listPair (Read.getRules()) in
   (fun x -> rewrite_loop x lr)
 
 (** return a list of Turtle.command **)
@@ -121,7 +120,7 @@ let charToCommand i = function
 
 
 let rec inter_loop  c li= match li with
-  | [] -> raise (failwith "votre symbole n'est pas dans le domaine")
+  | [] -> []
   | (a, b) :: t -> if a = c then
         let i = int_of_string (String.sub b 1 (String.length b - 1)) in
         let firstChar = String.get b 0 in
@@ -130,7 +129,7 @@ let rec inter_loop  c li= match li with
 
 (**return a list of Turtle.command from a char **)
 let interFunc =
-  let li = listPair (getInter()) in
+  let li = listPair (Read.getInter()) in
   (fun x -> inter_loop x li)
 
 (**create a Lsys from a string **)
@@ -139,4 +138,20 @@ let createLsys ax = {
   rules = rewriteFunc;
   interp = interFunc }
 
+(* apply rules to word once *)
+let rec  substitution_loop word  =
+  match word with
+  |Symb s ->  (try rewriteFunc s with Not_found -> Symb s)
+  |Seq s -> Seq (List.map (substitution_loop) s )
+  |Branch s -> Branch(substitution_loop s)
 
+  (* apply n times rules to the word *)
+let rec substitution word n =
+  if (n > 0) then substitution (substitution_loop word) (n-1) else word
+
+(* interpWord_loop (iter (createWord l) 1) *)
+let rec interWord word  =
+  match word with
+  |Symb s -> interFunc s
+  |Seq s -> concat(map(interWord) s)
+  |Branch s -> interWord s

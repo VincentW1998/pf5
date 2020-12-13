@@ -33,11 +33,11 @@ let roundFloat x =
   int_of_float (x +. getSign x)
 
 (* Polar cordinate to cartesian for axe X *)
-let cordinateX p length = 
+let cordinateX p length =
    int_of_float (p.x) + roundFloat(length  *. cos (degreeToRad p.a))
 
 (* Polar cordinate to cartesian for axe Y *)
-let cordinateY p length = 
+let cordinateY p length =
   int_of_float (p.y) + roundFloat(length *. sin (degreeToRad p.a))
 
 (* Polar cordinate to cartesian for axe X and Y *)
@@ -47,7 +47,7 @@ let cordinateXY p length =
     (x1, y1);;
 
 (* draw line with Graphics.lineto *)
-let draw_line pos taille = 
+let draw_line pos taille =
   let (x1, y1)  = cordinateXY pos taille in lineto x1 y1;
   {x = (float_of_int x1); y = (float_of_int y1); a = pos.a};;
 
@@ -66,11 +66,10 @@ let popStack pos = pop stackOfPos
 
 (* Interpret Turtle command to graphics command *)
 let rec turtleToGraphics command pos = match command with
-  | [] -> pos
+  | [] -> ()
   | Line a :: l-> turtleToGraphics l  (draw_line pos (float_of_int a))
   | Move a :: l->  turtleToGraphics l (move_point pos (float_of_int a))
   | Turn ang :: l-> turtleToGraphics l
   ({x = pos.x; y = pos.y; a = pos.a + ang})
   | Store :: l->  turtleToGraphics l (pushToStack pos)
   | Restore :: l-> turtleToGraphics l (popStack pos)
-

@@ -65,3 +65,9 @@ val inter_loop : 'a -> ('a * string) list -> Turtle.command list
 val interFunc : char -> Turtle.command list
 
 val createLsys : string -> char system
+
+val substitution_loop : char word -> char word
+
+val substitution : char word -> int -> char word
+
+val interWord : char word -> Turtle.command list
