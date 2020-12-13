@@ -1,6 +1,7 @@
 open List
 open Turtle
 open Read
+
 (** Words, rewrite systems, and rewriting *)
 
 type 's word =
