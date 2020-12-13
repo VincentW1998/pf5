@@ -149,9 +149,9 @@ let rec  substitution_loop word  =
 let rec substitution word n =
   if (n > 0) then substitution (substitution_loop word) (n-1) else word
 
-(* interpWord_loop (iter (createWord l) 1) *)
+(* interWord (iter (createWord l) 1) *)
 let rec interWord word  =
   match word with
   |Symb s -> interFunc s
   |Seq s -> concat(map(interWord) s)
-  |Branch s -> interWord s
+  |Branch s -> [Store] @ (interWord s) @ [Restore]

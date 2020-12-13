@@ -32,7 +32,7 @@ let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
     let niter = substitution (createWord (explode (getAxiome()))) 4 in
     let lcmd = interWord(niter) in
     clear_graph();
-  turtleToGraphics lcmd (move_point ({x = 200.; y = 200.; a = (-45)}) 0.)
+  turtleToGraphics lcmd (move_point ({x = 400.; y = 50.; a = 90}) 0.)
 
 (* keyStrokes listners  *)
  let rec loop ()=
