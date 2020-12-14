@@ -40,9 +40,6 @@ val createWord : char list -> char word
 (** funtion return 's word from string **)
 val stringToWord : string -> char word
 
-(** function return axiom from string **)
-val stringToAxiom : char word
-
 val pairCharString : string -> char * string
 
 val listPair_loop :
