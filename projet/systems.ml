@@ -17,14 +17,6 @@ type 's system = {
 
 (** Put here any type and function implementations concerning systems *)
 
-(**A[P[PA]A]**)
-
-(**
-Seq [Symb A;
-  Branch (Seq [Symb P;
-    Branch (Seq [Symb P; Symb A]); Symb A])]
- **)
-
 (**function change string to char list
  code from my project of Logique**)
 
@@ -78,11 +70,6 @@ let stringToWord str =
   let s = explode str in
   createWord s
 
-(** function return axiom from string **)
-let stringToAxiom =
-  let str = Read.getAxiome() in
-  stringToWord str
-
 (** (c, sub)
  c = first char of string
  sub = substring **)
@@ -108,6 +95,8 @@ let rec rewrite_loop  c lr = match lr with
 let rewriteFunc =
   let lr = listPair (Read.getRules()) in
   (fun x -> rewrite_loop x lr)
+
+
 
 (** return a list of Turtle.command **)
 let charToCommand i = function
@@ -147,11 +136,37 @@ let rec  substitution_loop word  =
 
   (* apply n times rules to the word *)
 let rec substitution word n =
-  if (n > 0) then substitution (substitution_loop word) (n-1) else word
+  if (n > 0) then substitution  (substitution_loop word) (n-1)
+  else word
 
-(* interpWord_loop (iter (createWord l) 1) *)
+(* interWord (iter (createWord l) 1) *)
 let rec interWord word  =
   match word with
   |Symb s -> interFunc s
   |Seq s -> concat(map(interWord) s)
-  |Branch s -> interWord s
+  |Branch s -> [Store] @ (interWord s) @ [Restore]
+
+let rewrite lr=
+  let lrules = listPair lr in
+  (fun x -> rewrite_loop x lrules)
+
+let interp li =
+  let linterp = listPair li in
+  (fun x -> inter_loop x linterp)
+
+let rec  substitution_loop2 lr = function
+  |Symb s ->  (try rewrite lr s with Not_found -> Symb s)
+  |Seq s -> Seq (List.map (substitution_loop2 lr)  s )
+  |Branch s -> Branch(substitution_loop2 lr s)
+
+let rec substitution2 lr word n =
+  if (n > 0) then substitution2 lr (substitution_loop2 lr word) (n-1)
+  else word
+
+let rec interWord2 li = function
+  |Symb s -> interp li s
+  |Seq s -> concat(map(interWord2 li) s)
+  |Branch s -> [Store] @ (interWord2 li s) @ [Restore]
+
+
+

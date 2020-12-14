@@ -61,7 +61,9 @@ let pushToStack pos = push pos stackOfPos; pos
 
 
 (*remove pos from Stack *)
-let popStack pos = pop stackOfPos
+let popStack pos =
+  let pos = pop stackOfPos in
+  moveto (int_of_float pos.x) (int_of_float pos.y); pos
 
 
 (* Interpret Turtle command to graphics command *)

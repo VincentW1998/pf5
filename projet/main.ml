@@ -1,12 +1,10 @@
 open Graphics
+open Unix
 open Lsystems (* Librairie regroupant le reste du code. Cf. fichier dune *)
 open Systems (* Par exemple *)
 open Turtle
 open Printf
 open Read
-
-
-
 
 (** Gestion des arguments de la ligne de commande.
     Nous suggérons l'utilisation du module Arg
@@ -18,29 +16,48 @@ let usage = (* Entete du message d'aide pour --help *)
 
 let action_what () = Printf.printf "%s\n" usage; exit 0
 
-
-
-
 let cmdline_options = [
-("--what" , Arg.Unit action_what, "description");
-(* ("-f", Arg.String (read_file), "lit le fichier de sauvegarde"); *)
+("--what" , Arg.Unit action_what, "description")
 ]
 
 let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
-  let trace () =
-    let niter = substitution (createWord (explode (getAxiome()))) 4 in
-    let lcmd = interWord(niter) in
-    clear_graph();
-  turtleToGraphics lcmd (move_point ({x = 200.; y = 200.; a = (-45)}) 0.)
+(**draw the Lsystem **)
+let trace () =
+  let n = nthIter() in
+  let niter = substitution2 (getRules())
+              (createWord (explode (getAxiome()))) n in
+  let lcmd = interWord2 (getInter()) (niter) in
+  clear_graph();
+  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)
+
+let rec animation_loop i n =
+if i > n then () else
+  let niter = substitution2 (getRules())
+              (createWord (explode (getAxiome()))) i in
+  let lcmd = interWord2 (getInter()) (niter) in
+  Unix.sleepf 0.3;
+  clear_graph();
+  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.);
+  animation_loop (i+1) n
+
+(**animation**)
+let animation n = animation_loop 0 n
+
+(**draw n iteration about one Lsystem with animation**)
+let trace2 () =
+  let n = nthIter() in
+  animation n
+
 
 (* keyStrokes listners  *)
  let rec loop ()=
   let event = wait_next_event [Key_pressed] in
   if event.keypressed
   then match event.key with
-    |'o' -> print_string "Type filename : "; let file = read_line() in read_file file ; loop()
-    | 't' -> trace();print_string(getAxiome());print_newline() ; loop()
+    |'o' -> let filename = fileName() in read_file filename ; loop()
+    | 't' -> trace2(); loop()
+    | 'c' -> clear_graph(); loop()
     | 'q'  -> close_graph ()
     | _    -> loop ()
   else loop ()
@@ -50,7 +67,7 @@ let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
 let main () =
   Arg.parse cmdline_options extra_arg_action usage;
-  open_graph "";
+  open_graph " 500x500";
   loop ();
   print_string "Bye\n"
 

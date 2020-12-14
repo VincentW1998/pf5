@@ -71,3 +71,13 @@ val substitution_loop : char word -> char word
 val substitution : char word -> int -> char word
 
 val interWord : char word -> Turtle.command list
+
+val rewrite : string list -> char -> char word
+
+val interp : string list -> char -> Turtle.command list
+
+val substitution_loop2 : string list -> char word -> char word
+
+val substitution2 : string list -> char word -> int -> char word
+
+val interWord2 : string list -> char word -> Turtle.command list
