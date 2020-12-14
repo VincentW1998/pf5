@@ -49,6 +49,9 @@ val pushToStack : position -> position
 (* remove pos from Stack *)
 val popStack : 'a -> position
 
+val depassement : unit -> bool
 
 (* Interpret Turtle command to graphics command *)
 val turtleToGraphics : command list -> position -> unit
+
+

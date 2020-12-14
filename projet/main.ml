@@ -31,6 +31,7 @@ let trace () =
   clear_graph();
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)
 
+
 let rec animation_loop i n =
 if i > n then () else
   let niter = substitution (getRules())
