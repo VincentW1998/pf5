@@ -36,9 +36,11 @@ if i > n then () else
   let niter = substitution (getRules())
               (createWord (explode (getAxiome()))) i in
   let lcmd = interpWord (getInter()) (niter) in
+  auto_synchronize false;
   Unix.sleepf 0.3;
   clear_graph();
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.);
+  synchronize();
   animation_loop (i+1) n
 
 (**animation**)
@@ -68,6 +70,7 @@ let trace2 () =
 let main () =
   Arg.parse cmdline_options extra_arg_action usage;
   open_graph " 500x500";
+  set_window_title "Felix le Boss";
   loop ();
   print_string "Bye\n"
 
