@@ -20,6 +20,16 @@ type 's system = {
 (**function change string to char list
  code from my project of Logique**)
 
+(** return a list of Turtle.command **)
+let charToCommand i = function
+  |'L' -> [Line i]
+  |'M' -> [Move i]
+  |'T' -> [Turn i]
+  |'S' -> [Store]
+  |'R' -> [Restore]
+  | _ -> raise (failwith "votre commande n'existe pas")
+
+
 (** return char list from string**)
 let explode s =
   let rec exp i l =
@@ -35,7 +45,6 @@ let rec insert x l = match l with
 let rec sort l = match l with
   |[] -> []
   |x :: xs -> insert x (sort xs)
-
 
 (**function return sorted list of symb without replication**)
 let rec list_of_symb_loop accu = function
@@ -54,7 +63,6 @@ let rec cutBrackets l n = match l with
   | ']' :: t -> if n = 0 then t else cutBrackets t (n-1)
   | h :: t -> cutBrackets t n
 
-(** function return a char word from  'a list**)
 let rec createWord_loop (accu : 'a list) = function
   | [] | ']' :: _ ->  (List.rev accu)
   | '[' :: t  ->
@@ -62,6 +70,7 @@ let rec createWord_loop (accu : 'a list) = function
         (cutBrackets t 0)
   | h :: t -> createWord_loop (Symb h :: accu) t
 
+(** function return a char word from  'a list**)
 
 let createWord cl = Seq (createWord_loop [] cl)
 
@@ -91,21 +100,6 @@ let rec rewrite_loop  c lr = match lr with
   | [] -> raise Not_found
   | (a, b) :: t-> if a = c then  stringToWord b else rewrite_loop c t;;
 
-(**function rewrite 's word with rules**)
-let rewriteFunc =
-  let lr = listPair (Read.getRules()) in
-  (fun x -> rewrite_loop x lr)
-
-
-
-(** return a list of Turtle.command **)
-let charToCommand i = function
-  |'L' -> [Line i]
-  |'M' -> [Move i]
-  |'T' -> [Turn i]
-  |'S' -> [Store]
-  |'R' -> [Restore]
-  | _ -> raise (failwith "votre commande n'existe pas")
 
 
 let rec inter_loop  c li= match li with
@@ -116,57 +110,38 @@ let rec inter_loop  c li= match li with
         charToCommand i firstChar else inter_loop c t
 
 
-(**return a list of Turtle.command from a char **)
-let interFunc =
-  let li = listPair (Read.getInter()) in
-  (fun x -> inter_loop x li)
-
 (**create a Lsys from a string **)
-let createLsys ax = {
+(**let createLsys ax = {
   axiom = stringToWord ax;
   rules = rewriteFunc;
-  interp = interFunc }
+  interp = interFunc }*)
 
-(* apply rules to word once *)
-let rec  substitution_loop word  =
-  match word with
-  |Symb s ->  (try rewriteFunc s with Not_found -> Symb s)
-  |Seq s -> Seq (List.map (substitution_loop) s )
-  |Branch s -> Branch(substitution_loop s)
-
-  (* apply n times rules to the word *)
-let rec substitution word n =
-  if (n > 0) then substitution  (substitution_loop word) (n-1)
-  else word
-
-(* interWord (iter (createWord l) 1) *)
-let rec interWord word  =
-  match word with
-  |Symb s -> interFunc s
-  |Seq s -> concat(map(interWord) s)
-  |Branch s -> [Store] @ (interWord s) @ [Restore]
-
+(**function rewrite 's word with rules**)
 let rewrite lr=
   let lrules = listPair lr in
   (fun x -> rewrite_loop x lrules)
 
+(**return a list of Turtle.command from a char **)
 let interp li =
   let linterp = listPair li in
   (fun x -> inter_loop x linterp)
 
-let rec  substitution_loop2 lr = function
+(* apply rules to word once *)
+let rec  substitution_loop lr = function
   |Symb s ->  (try rewrite lr s with Not_found -> Symb s)
-  |Seq s -> Seq (List.map (substitution_loop2 lr)  s )
-  |Branch s -> Branch(substitution_loop2 lr s)
+  |Seq s -> Seq (List.map (substitution_loop lr)  s )
+  |Branch s -> Branch(substitution_loop lr s)
 
-let rec substitution2 lr word n =
-  if (n > 0) then substitution2 lr (substitution_loop2 lr word) (n-1)
+  (* apply n times rules to the word *)
+let rec substitution lr word n =
+  if (n > 0) then substitution lr (substitution_loop lr word) (n-1)
   else word
 
-let rec interWord2 li = function
+(* interpWord (iter (createWord l) 1) *)
+let rec interpWord li = function
   |Symb s -> interp li s
-  |Seq s -> concat(map(interWord2 li) s)
-  |Branch s -> [Store] @ (interWord2 li s) @ [Restore]
+  |Seq s -> concat(map(interpWord li) s)
+  |Branch s -> [Store] @ (interpWord li s) @ [Restore]
 
 
 

@@ -25,17 +25,17 @@ let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 (**draw the Lsystem **)
 let trace () =
   let n = nthIter() in
-  let niter = substitution2 (getRules())
+  let niter = substitution (getRules())
               (createWord (explode (getAxiome()))) n in
-  let lcmd = interWord2 (getInter()) (niter) in
+  let lcmd = interpWord (getInter()) (niter) in
   clear_graph();
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)
 
 let rec animation_loop i n =
 if i > n then () else
-  let niter = substitution2 (getRules())
+  let niter = substitution (getRules())
               (createWord (explode (getAxiome()))) i in
-  let lcmd = interWord2 (getInter()) (niter) in
+  let lcmd = interpWord (getInter()) (niter) in
   Unix.sleepf 0.3;
   clear_graph();
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.);
