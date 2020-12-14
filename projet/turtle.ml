@@ -71,7 +71,8 @@ let depassement ()=
   let x0,y0 = current_point() in
   let x1 = size_x () in
   let y1 = size_y () in
-  (x0 < 0 || x0 > x1) || (y0 < 0 || y0 > y1)
+  if (x0 < 0 || x0 > x1) || (y0 < 0 || y0 > y1) then
+  raise Erreur_out
 
 (** true if the min and the max is out of window **)
 let minMaxOut = (fun min max b ->
@@ -81,7 +82,6 @@ let minMaxOut = (fun min max b ->
 
 (* Interpret Turtle command to graphics command *)
 let rec turtleToGraphics command pos =
-  if depassement () then raise Erreur_out else
   match command with
   | [] -> ()
   | Line a :: l-> turtleToGraphics l  (draw_line pos (float_of_int a))
@@ -90,5 +90,6 @@ let rec turtleToGraphics command pos =
   ({x = pos.x; y = pos.y; a = pos.a + ang})
   | Store :: l->  turtleToGraphics l (pushToStack pos)
   | Restore :: l-> turtleToGraphics l (popStack pos)
+
 
 
