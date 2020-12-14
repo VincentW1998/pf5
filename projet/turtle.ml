@@ -73,6 +73,11 @@ let depassement ()=
   let y1 = size_y () in
   (x0 < 0 || x0 > x1) || (y0 < 0 || y0 > y1)
 
+(** true if the min and the max is out of window **)
+let minMaxOut = (fun min max b ->
+    (min < 0) && (max > b))
+
+
 
 (* Interpret Turtle command to graphics command *)
 let rec turtleToGraphics command pos =
