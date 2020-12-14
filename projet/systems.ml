@@ -17,14 +17,6 @@ type 's system = {
 
 (** Put here any type and function implementations concerning systems *)
 
-(**A[P[PA]A]**)
-
-(**
-Seq [Symb A;
-  Branch (Seq [Symb P;
-    Branch (Seq [Symb P; Symb A]); Symb A])]
- **)
-
 (**function change string to char list
  code from my project of Logique**)
 
@@ -77,11 +69,6 @@ let createWord cl = Seq (createWord_loop [] cl)
 let stringToWord str =
   let s = explode str in
   createWord s
-
-(** function return axiom from string **)
-let stringToAxiom =
-  let str = Read.getAxiome() in
-  stringToWord str
 
 (** (c, sub)
  c = first char of string

@@ -22,14 +22,7 @@ let cmdline_options = [
 
 let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
-
-(*let trace () =
-  let n = nthIter() in
-  let niter = substitution (createWord (explode (getAxiome()))) n in
-  let lcmd = interWord(niter) in
-  clear_graph();
-  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)*)
-
+(**draw the Lsystem **)
 let trace () =
   let n = nthIter() in
   let niter = substitution2 (getRules())
@@ -48,8 +41,10 @@ if i > n then () else
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.);
   animation_loop (i+1) n
 
+(**animation**)
 let animation n = animation_loop 0 n
 
+(**draw n iteration about one Lsystem with animation**)
 let trace2 () =
   let n = nthIter() in
   animation n
@@ -61,7 +56,7 @@ let trace2 () =
   if event.keypressed
   then match event.key with
     |'o' -> let filename = fileName() in read_file filename ; loop()
-    | 't' -> trace2();print_string(getAxiome());print_newline() ; loop()
+    | 't' -> trace2(); loop()
     | 'c' -> clear_graph(); loop()
     | 'q'  -> close_graph ()
     | _    -> loop ()
