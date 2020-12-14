@@ -7,6 +7,6 @@
 (executable
  (name main)
  (modules main)
- (libraries graphics lsystems)
+ (libraries graphics lsystems unix)
  (flags :standard -w -27-26-32-33)
 )

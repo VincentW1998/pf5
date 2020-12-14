@@ -1,10 +1,10 @@
 open Graphics
+open Unix
 open Lsystems (* Librairie regroupant le reste du code. Cf. fichier dune *)
 open Systems (* Par exemple *)
 open Turtle
 open Printf
 open Read
-
 
 (** Gestion des arguments de la ligne de commande.
     Nous suggérons l'utilisation du module Arg
@@ -38,6 +38,22 @@ let trace () =
   clear_graph();
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)
 
+let rec animation_loop i n =
+if i > n then () else
+  let niter = substitution2 (getRules())
+              (createWord (explode (getAxiome()))) i in
+  let lcmd = interWord2 (getInter()) (niter) in
+  Unix.sleepf 0.3;
+  clear_graph();
+  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.);
+  animation_loop (i+1) n
+
+let animation n = animation_loop 0 n
+
+let trace2 () =
+  let n = nthIter() in
+  animation n
+
 
 (* keyStrokes listners  *)
  let rec loop ()=
@@ -45,7 +61,7 @@ let trace () =
   if event.keypressed
   then match event.key with
     |'o' -> let filename = fileName() in read_file filename ; loop()
-    | 't' -> trace();print_string(getAxiome());print_newline() ; loop()
+    | 't' -> trace2();print_string(getAxiome());print_newline() ; loop()
     | 'c' -> clear_graph(); loop()
     | 'q'  -> close_graph ()
     | _    -> loop ()
