@@ -24,13 +24,14 @@ let cmdline_options = [
 let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
 (**draw the Lsystem **)
-let trace () =
+(**let trace () =
   let n = nthIter() in
   let niter = substitution (getRules())
               (createWord (explode (getAxiome()))) n in
   let lcmd = interpWord (getInter()) (niter) in
   clear_graph();
-  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)
+  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.) **)
+
 
 (**fonction auxiliare pour la fonction animation**)
 let rec animation_loop i n =
@@ -41,15 +42,16 @@ if i > n then () else
   auto_synchronize false;
   Unix.sleepf 0.3;
   clear_graph();
-  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.);
+  turtleToGraphics lcmd (move_point ({x = 200.; y = 100.; a = 90}) 0.);
   synchronize();
   animation_loop (i+1) n
+
 
 (**animation**)
 let animation n = animation_loop 0 n
 
 (**draw n iteration about one Lsystem with animation**)
-let trace2 () =
+let trace () =
   let n = nthIter() in
   animation n
 
@@ -60,7 +62,7 @@ let trace2 () =
   if event.keypressed
   then match event.key with
     |'o' -> let filename = fileName() in read_file filename ; loop()
-    |'t' -> trace2(); loop()
+    |'t' -> trace(); loop()
     |'c' -> clear_graph(); loop()
     |'q' -> close_graph ()
     |'n' -> writeFile(); loop()
@@ -81,5 +83,5 @@ let main () =
     (c'est-à-dire que l'on est pas dans un "toplevel" ocaml interactif).
     Sinon c'est au programmeur de lancer ce qu'il veut *)
 
-
+let () = Printexc.record_backtrace true
 let () = if not !Sys.interactive then main ()

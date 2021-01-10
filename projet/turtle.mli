@@ -49,7 +49,7 @@ val pushToStack : position -> position
 (* remove pos from Stack *)
 val popStack : 'a -> position
 
-val depassement : unit -> unit
+val depassement : unit -> bool
 
 (** true if the min and the max is out of window **)
 val minMaxOut : int -> int -> int -> bool

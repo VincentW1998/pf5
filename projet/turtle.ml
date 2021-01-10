@@ -1,8 +1,6 @@
 open Stack
 open Graphics
 
-exception Erreur_out;;
-
 type command =
 | Line of int
 | Move of int
@@ -71,8 +69,7 @@ let depassement ()=
   let x0,y0 = current_point() in
   let x1 = size_x () in
   let y1 = size_y () in
-  if (x0 < 0 || x0 > x1) || (y0 < 0 || y0 > y1) then
-  raise Erreur_out
+  (x0 < 0 || x0 > x1) || (y0 < 0 || y0 > y1)
 
 (** true if the min and the max is out of window **)
 let minMaxOut = (fun min max b ->
