@@ -5,6 +5,7 @@ open Systems (* Par exemple *)
 open Turtle
 open Printf
 open Read
+open Save
 
 (** Gestion des arguments de la ligne de commande.
     Nous suggérons l'utilisation du module Arg
@@ -59,9 +60,10 @@ let trace2 () =
   if event.keypressed
   then match event.key with
     |'o' -> let filename = fileName() in read_file filename ; loop()
-    | 't' -> trace2(); loop()
-    | 'c' -> clear_graph(); loop()
-    | 'q'  -> close_graph ()
+    |'t' -> trace2(); loop()
+    |'c' -> clear_graph(); loop()
+    |'q' -> close_graph ()
+    |'n' -> writeFile(); loop()
     | _    -> loop ()
   else loop ()
 
