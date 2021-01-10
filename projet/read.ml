@@ -16,7 +16,7 @@ let read_file name =
     let rec loopSeparator str =
       match rdLine () with
       (* if s length = 0 then it is \n *)
-      | Some s -> if(String.length(s) = 0) then str else 
+      | Some s -> if(String.length(s) = 0) then str else
       (match s.[0] with
         |'#' -> loopSeparator str
         | _ -> if(String.length(str) = 0) then loopSeparator s
@@ -37,9 +37,11 @@ let getRules () = String.split_on_char '\n' (nth(!lsys)1)
 let getInter () = String.split_on_char '\n' (nth(!lsys)2)
 
 
-let fileName () =
+let rec fileName () =
   print_string "Type filename : ";
-  read_line ()
+  let name = read_line () in
+  if Sys.file_exists name then name
+  else (print_string "no such file or directory \n"; fileName())
 
 let nthIter () =
   print_string "Type an integer n for the nth iteration : ";
