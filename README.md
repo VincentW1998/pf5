@@ -15,7 +15,7 @@ Voir [OBJECTIFS.md](OBJECTIFS.md)
 - Le cours est évalué par un projet (30%) et par un examen final (70%).
 - **Dates** :
   * Examen présentiel le **mardi 5/1 15h30-17h30**. Programme : tout sauf le cours 12. Documents papiers autorisés.
-  * Projet à finir d'ici au **lundi 11/1** au plus tard. Rendu via dépôt git sur `gaufre`, voir les consignes dans la section Projet.
+  * Projet à finir d'ici à **jeudi 14/1 à midi** au plus tard. Rendu via dépôt git sur `gaufre`, voir les consignes dans la section Projet.
   * [Liste provisoire des dépôts](https://www.irif.fr/~letouzey/pf5/depots.txt) qui seront pris en compte comme rendus. Plus de détails dans ce [message](https://listes.u-paris.fr/wws/arc/l3.pf5.info/2021-01/msg00000.html).
 
 ## Inscrivez-vous !
