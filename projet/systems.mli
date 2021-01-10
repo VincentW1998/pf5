@@ -50,31 +50,22 @@ val listPair : string list -> (char * string) list
 
 val rewrite_loop : 'a -> ('a * string) list -> char word
 
-(**function rewrite 's word with rules**)
-val rewriteFunc : char -> char word
 
 (** return a list of Turtle.command **)
 val charToCommand : int -> char -> Turtle.command list
 
 val inter_loop : 'a -> ('a * string) list -> Turtle.command list
 
-(**return a list of Turtle.command from a char **)
-val interFunc : char -> Turtle.command list
+(**val createLsys : string -> char system**)
 
-val createLsys : string -> char system
-
-val substitution_loop : char word -> char word
-
-val substitution : char word -> int -> char word
-
-val interWord : char word -> Turtle.command list
-
+(**function rewrite 's word with rules**)
 val rewrite : string list -> char -> char word
 
+(**return a list of Turtle.command from a char **)
 val interp : string list -> char -> Turtle.command list
 
-val substitution_loop2 : string list -> char word -> char word
+val substitution_loop : string list -> char word -> char word
 
-val substitution2 : string list -> char word -> int -> char word
+val substitution : string list -> char word -> int -> char word
 
-val interWord2 : string list -> char word -> Turtle.command list
+val interpWord : string list -> char word -> Turtle.command list

@@ -30,19 +30,12 @@ let rec nth l k = match l with
   | x :: _  when k = 0 -> x
   | _ :: xs -> nth xs (k - 1)
 
-let errFile () =
-  print_string "Type filename : ";
-  let file = read_line() in
-  read_file file
+let getAxiome () = nth (!lsys) 0
 
-let rec getAxiome () = if List.length (!lsys) <> 0 then
-  nth (!lsys) 0 else (errFile (); getAxiome())
+let getRules () = String.split_on_char '\n' (nth(!lsys)1)
 
-let rec getRules () = if List.length (!lsys) <> 0 then
-  String.split_on_char '\n' (nth(!lsys)1) else (errFile (); getRules())
+let getInter () = String.split_on_char '\n' (nth(!lsys)2)
 
-let rec getInter () = if List.length (!lsys) <> 0 then
-  String.split_on_char '\n' (nth(!lsys)2) else (errFile (); getInter())
 
 let fileName () =
   print_string "Type filename : ";

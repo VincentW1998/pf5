@@ -49,6 +49,12 @@ val pushToStack : position -> position
 (* remove pos from Stack *)
 val popStack : 'a -> position
 
+val depassement : unit -> unit
+
+(** true if the min and the max is out of window **)
+val minMaxOut : int -> int -> int -> bool
 
 (* Interpret Turtle command to graphics command *)
 val turtleToGraphics : command list -> position -> unit
+
+
