@@ -68,6 +68,8 @@ val getCurrentPos : unit -> position
 
 val setPosX : int -> position
 
+val origine : unit -> position
+
 val firstPass : command list -> position -> float -> unit
 
 (* Interpret Turtle command to graphics command *)
