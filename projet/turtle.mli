@@ -19,6 +19,8 @@ type position = {
 (* New stack, initially empty *)
 val stackOfPos : position Stack.t
 
+val stackXmin : int Stack.t
+
 (** get the sign of x and add this sign to 0.5**)
 val getSign : float -> float
 
@@ -40,6 +42,10 @@ val cordinateXY : position -> float -> int * int
 (* draw line with Graphics.lineto *)
 val draw_line : position -> float -> position
 
+val initXmin : int -> unit
+
+val drawFake : position -> float -> position
+
 (* move the current point *)
 val move_point : position -> float -> position
 
@@ -54,7 +60,17 @@ val depassement : unit -> bool
 (** true if the min and the max is out of window **)
 val minMaxOut : int -> int -> int -> bool
 
+val minOut : int -> bool
+
+val delta : int -> int
+
+val getCurrentPos : unit -> position
+
+val setPosX : int -> position
+
+val firstPass : command list -> position -> float -> unit
+
 (* Interpret Turtle command to graphics command *)
-val turtleToGraphics : command list -> position -> unit
+val turtleToGraphics : command list -> position -> float -> unit
 
 
