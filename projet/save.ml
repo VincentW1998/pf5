@@ -44,13 +44,13 @@ let rec checkListValid l =
   |i :: l' -> if(List.mem i !symbolSet) then checkListValid l' else false ;;
 
 let rec baseExpression () =
-  let input = outputThenRead "Base Expression: " in
+  let input = outputThenRead "Base Expression : " in
   let expression = explode input in
   if checkListValid expression then input
     else (print_string "invalid Expression\n"; baseExpression ())
 
 let rec interpretation s =
-  let input = outputThenRead (String.concat "" ["do you want to do something for ";String.make 1 s;" ? y/n: "]) in
+  let input = outputThenRead (String.concat "" ["do you want to add an interpretation for ";String.make 1 s;" ? y/n: "]) in
   match input with
   |"n" -> ()
   |"y" -> let interp = outputThenRead "what do you want to do ? : " in
