@@ -97,21 +97,21 @@ let minMaxOut = (fun min max b ->
 let minOut = (fun min ->
     (min < 0))
 
-let delta = (fun min -> abs (min) + 120)
+(** add 120 to xmin or ymin**)
+let delta = (fun min pos -> float_of_int(abs (min)) +. 60. +. pos.x)
 
 let getCurrentPos () =
   let x0, y0 = current_point() in
   {x = (float_of_int x0); y = (float_of_int y0); a = 90}
 
-let setPosX x1 =
-  let x2 = delta x1 in
+let setPosX x1 pos =
+  let x2 = delta x1 pos in
     clear stackXmin;
-    {x = (float_of_int x2); y = 60.; a = 90}
+    {x = x2; y = pos.y; a = pos.a}
 
-let origine () =
-  let pos = {x = 60.; y = 60.; a = 90} in
+let origine pos =
   let x1 = top stackXmin in
-  if x1 < 0 then setPosX x1 else pos
+  if x1 < 0 then setPosX x1 pos else pos
 
 
 (** first analysis of the lsystem**)

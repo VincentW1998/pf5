@@ -33,9 +33,9 @@ let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
   clear_graph();
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.) **)
 
+(** **)
 let rec getFacteur result i n =
-  if i > n then result else
-  if i mod 2 = 0 then getFacteur result (i+1) n else
+  if i = n then result else
   getFacteur (result /. 2.) (i+1) n
 
 let fact n = getFacteur 1. 0 n
@@ -52,7 +52,7 @@ if i > n then () else
   Unix.sleepf 0.3;
   clear_graph();
   firstPass lcmd (move_point pos 0.) facteur;
-  let newPos = origine() in
+  let newPos = origine pos in
   turtleToGraphics lcmd (move_point newPos 0.) facteur;
   synchronize();
   animation_loop (i+1) n newPos

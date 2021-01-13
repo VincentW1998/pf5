@@ -62,13 +62,13 @@ val minMaxOut : int -> int -> int -> bool
 
 val minOut : int -> bool
 
-val delta : int -> int
+val delta : int -> position -> float
 
 val getCurrentPos : unit -> position
 
-val setPosX : int -> position
+val setPosX : int -> position -> position
 
-val origine : unit -> position
+val origine : position -> position
 
 val firstPass : command list -> position -> float -> unit
 
