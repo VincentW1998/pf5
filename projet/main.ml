@@ -34,11 +34,6 @@ let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
   turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.) **)
 
 (** **)
-let rec getFacteur result i n =
-  if i = n then result else
-  getFacteur (result /. 2.) (i+1) n
-
-let fact n = getFacteur 1. 0 n
 
 
 (**fonction auxiliare pour la fonction animation**)
@@ -47,7 +42,7 @@ if i > n then () else
   let niter = substitution (getRules())
               (createWord (explode (getAxiome()))) i in
   let lcmd = interpWord (getInter()) (niter) in
-  let facteur = fact i in
+  let facteur = 1. /. 3. ** (float_of_int i) in
   auto_synchronize false;
   Unix.sleepf 0.3;
   clear_graph();
@@ -60,7 +55,7 @@ if i > n then () else
 
 (**animation**)
 let animation n =
-  let pos = {x = 60.; y = 60.; a = 90} in
+  let pos = {x = 60.; y = 60.; a = 0} in
     animation_loop 0 n pos
 
 (**draw n iteration about one Lsystem with animation**)

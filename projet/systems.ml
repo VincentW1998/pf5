@@ -71,7 +71,6 @@ let rec createWord_loop (accu : 'a list) = function
   | h :: t -> createWord_loop (Symb h :: accu) t
 
 (** function return a char word from  'a list**)
-
 let createWord cl = Seq (createWord_loop [] cl)
 
 (** funtion return 's word from string **)

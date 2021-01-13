@@ -21,6 +21,8 @@ val stackOfPos : position Stack.t
 
 val stackXmin : int Stack.t
 
+val stackYmin : int Stack.t
+
 (** get the sign of x and add this sign to 0.5**)
 val getSign : float -> float
 
@@ -44,6 +46,8 @@ val draw_line : position -> float -> position
 
 val initXmin : int -> unit
 
+val initYmin : int -> unit
+
 val drawFake : position -> float -> position
 
 (* move the current point *)
@@ -62,11 +66,15 @@ val minMaxOut : int -> int -> int -> bool
 
 val minOut : int -> bool
 
-val delta : int -> position -> float
-
-val getCurrentPos : unit -> position
+val delta : int -> float -> float
 
 val setPosX : int -> position -> position
+
+val setPosY : int -> position -> position
+
+(*val origineX : position -> position
+
+val origineY : position -> position *)
 
 val origine : position -> position
 

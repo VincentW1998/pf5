@@ -36,7 +36,6 @@ let getRules () = String.split_on_char '\n' (nth(!lsys)1)
 
 let getInter () = String.split_on_char '\n' (nth(!lsys)2)
 
-
 let rec fileName () =
   print_string "Type filename : ";
   let name = read_line () in
