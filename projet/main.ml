@@ -74,8 +74,6 @@ let trace2 () =
   else loop ()
 
 
-
-
 let main () =
   Arg.parse cmdline_options extra_arg_action usage;
   open_graph " 600x600";

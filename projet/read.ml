@@ -24,11 +24,12 @@ let read_file name =
       | None -> close_in f; str in
     lsys :=  List.rev([loopSeparator "";loopSeparator "";loopSeparator ""])
 
-
+(** List.nth**)
 let rec nth l k = match l with
   | [] -> raise (Failure "empty list")
   | x :: _  when k = 0 -> x
   | _ :: xs -> nth xs (k - 1)
+
 
 let getAxiome () = nth (!lsys) 0
 
@@ -36,12 +37,14 @@ let getRules () = String.split_on_char '\n' (nth(!lsys)1)
 
 let getInter () = String.split_on_char '\n' (nth(!lsys)2)
 
+(** Ask user which file he wants**)
 let rec fileName () =
   print_string "Type filename : ";
   let name = read_line () in
   if Sys.file_exists name then name
   else (print_string "no such file or directory \n"; fileName())
 
+(** Ask user the nth iteration he wants **)
 let nthIter () =
   print_string "Type an integer n for the nth iteration : ";
   int_of_string (read_line())
