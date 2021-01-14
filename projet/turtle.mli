@@ -84,6 +84,16 @@ val newFact : position -> float -> float
 
 val firstPass : command list -> position -> float -> unit
 
+val stackCouleur : (int * int * int) Stack.t
+
+val couleur : int -> int -> int -> Graphics.color
+
+val initialiseRGB : unit -> unit
+
+val setRGB : unit -> unit
+
+val change_color : unit -> unit
+
 (* Interpret Turtle command to graphics command *)
 val turtleToGraphics : command list -> position -> float -> int -> unit
 

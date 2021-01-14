@@ -1,6 +1,7 @@
 open Stack
 open Graphics
 open Unix
+open Random
 
 type command =
 | Line of int
@@ -126,13 +127,14 @@ let setPosY y1 pos base stack=
   clear stack;
     {x = pos.y; y = y2; a = pos.a}
 
+(** nouvelle position en fonction de la taille de la figure**)
 let origine pos =
   let xmin = top stackXmin in
   let ymin = top stackYmin in
-  let pos1 = if xmin < 0 then setPosX xmin pos 60. stackXmin else pos in
-  if ymin < 0 then setPosY ymin pos 60. stackYmin else pos1
+  let pos1 = if minOut xmin then setPosX xmin pos 60. stackXmin else pos in
+  if minOut ymin then setPosY ymin pos 60. stackYmin else pos1
 
-
+(** nouveau facteur en fonction de la taille de la figure**)
 let newFact pos facteur =
   let xmin = top stackXmin in
   let ymin = top stackYmin in
@@ -144,7 +146,7 @@ let newFact pos facteur =
     clear stackXmax;
     if (ymax + yadd > 600) || (xmax + xadd > 600) ||
     (minMaxOut xmin xmax (size_x()) ) || (minMaxOut ymin ymax (size_y())) then
-    facteur *. (1./.1.5) else facteur
+    facteur *. (1./.1.05) else facteur
 
 (** first analysis of the lsystem**)
 let rec firstPass command pos facteur =
@@ -159,12 +161,35 @@ let rec firstPass command pos facteur =
   | Store :: l->  firstPass l (pushToStack pos) facteur
   | Restore :: l-> firstPass l (popStack pos) facteur
 
+let stackCouleur = create()
+
+let couleur = (fun r g b -> rgb r g b)
+
+let initialiseRGB ()= if is_empty stackCouleur then
+  let r = Random.int 256 in
+  let g = Random.int 256 in
+  let b = Random.int 256 in
+  push (r,g,b) stackCouleur
+
+let setRGB () =
+  let r1,g1,b1 = top stackCouleur in
+  let r2,g2,b2 =  ((r1+1 mod 255), (g1+1 mod 255), (b1+1 mod 255)) in
+  push (r2,g2,b2) stackCouleur
+
+(** change la couleur a chaque iteration**)
+let change_color () =
+  initialiseRGB ();
+  setRGB();
+  let r,g,b = top stackCouleur in
+  let col = couleur r g b in
+  Graphics.set_color col
 
 (* Interpret Turtle command to graphics command *)
 let rec turtleToGraphics command pos facteur n =
   Unix.sleepf (0.005 *. (1./.2. ** (float_of_int n)));
-  match command with
-  | [] -> ()
+  change_color();
+    match command with
+  | [] -> clear stackCouleur
   | Line a :: l->
   turtleToGraphics l  (draw_line pos ((float_of_int a) *. facteur)) facteur n
   | Move a :: l->
@@ -174,6 +199,7 @@ let rec turtleToGraphics command pos facteur n =
   | Store :: l->  turtleToGraphics l (pushToStack pos) facteur n
   | Restore :: l-> turtleToGraphics l (popStack pos) facteur n
 
+(** return (position * facteur) **)
 let getNewPosFacteur lcmd pos facteur=
   firstPass lcmd (move_point pos 0.) facteur;
   (origine pos, newFact pos facteur)
