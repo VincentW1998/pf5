@@ -12,7 +12,11 @@ Voir [OBJECTIFS.md](OBJECTIFS.md)
 
 - Le responsable du cours est Pierre Letouzey. 
 - Les chargés de TD sont Balthazar Bauer, Giovanni Bernardi, Adrien Guatto, Pierre Letouzey et Vincent Padovani.
-- Le cours est évalué par un projet et par un examen final (à confirmer).
+- Le cours est évalué par un projet (30%) et par un examen final (70%).
+- **Dates** :
+  * Examen présentiel le **mardi 5/1 15h30-17h30**. Programme : tout sauf le cours 12. Documents papiers autorisés.
+  * Projet à finir d'ici à **jeudi 14/1 à midi** au plus tard. Rendu via dépôt git sur `gaufre`, voir les consignes dans la section Projet.
+  * [Liste provisoire des dépôts](https://www.irif.fr/~letouzey/pf5/depots.txt) qui seront pris en compte comme rendus. Plus de détails dans ce [message](https://listes.u-paris.fr/wws/arc/l3.pf5.info/2021-01/msg00000.html).
 
 ## Inscrivez-vous !
 
@@ -80,7 +84,7 @@ Beaucoup de contenus proviennent ou s'inspirent d'anciens enseignants de ce cour
 
 #### Cours 12 (semaine du 30/11)
   - Quelques mots sur modules et signatures : [markdown](slides/cours-12-modules.md). Ceci ne sera pas au programme de l'examen, mais peut vous servir en projet.
-  - On fera jeudi quelques exercices pris dans les annales d'examen, cf la section ci-dessous.
+  - Quelques exercices pris dans les [annales d'examen](#anciens-examens) plus bas.
 
 
 ## Travaux pratiques (via Learn-OCaml)
@@ -115,7 +119,9 @@ Les premiers TP utilisent http://pf5.ddns.net , une instance de la plateforme **
 
 ## Projet
 
-Voir le sous-repertoire `projet` et en particulier le [sujet](projet/projet.pdf) et le [README.md](projet/README.md).
+**Nouveau** : les [CONSIGNES](projet/CONSIGNES.md) précises relatives au rendu et à l'évaluation sont disponibles (cela correspond au mail envoyé le 7 decembre).
+
+Voir le sous-repertoire [projet](projet) et en particulier le [sujet](projet/projet.pdf) et le [README.md](projet/README.md).
 Attention, il peut y avoir encore des changements et correctifs, à suivre.
 
 Quelques liens:
@@ -125,9 +131,9 @@ Quelques liens:
 ## Anciens examens
 
 - [examen 2018/2019](exams/examen1819.pdf) écrit par Michele Pagani.
-  Le [sketch](https://sketch.sh/s/dgfrHHkNzdUuf3VYTRO3Vy/) de correction.
+  Correction : [markdown](exams/exam1819.md), [sketch](https://sketch.sh/s/dgfrHHkNzdUuf3VYTRO3Vy/).
 
-- [examen 2019/2020](exams/examen1920.pdf) par Y. Regis-Gianas.
+- [examen 2019/2020](exams/examen1920.pdf) par Y. Regis-Gianas. Correction : [markdown](exams/exam1920.md).
 
 ## Références et bibliographie
 
