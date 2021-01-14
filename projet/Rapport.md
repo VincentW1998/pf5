@@ -39,7 +39,9 @@ Puis executer l'executable:
 
 
 ##Découpage modulaire
-** main.ml **
+
+**main.ml:**
+
 Ce module contient la boucle interactive entre l'interface graphique et
 l'utilisateur.
 C'est aussi a partir de la, qu'on appelle toutes les fonctions permettant la
@@ -47,13 +49,17 @@ generation d'un L-Systeme sous forme de `word` avec sa fonction de substitution,
 sa fonction d'interpretation et son axiome. Mais aussi l'affichage d'un
 L-Systeme
 
-** turtle.ml **
+**turtle.ml:**
+
 Ce module permet d'interpreter une liste de commande Turtle en commande
 graphics.
 Pour y parvenir il va falloir tout d'abord calculer les coordonnees des nouvelles
 positions, donc convertir correctement les int vers les float et inversement 
-** system.ml **
-** read.ml **
+
+**system.ml:**
+
+**read.ml:**
+
 Ce module permet de lire un fichier contenant un L-Systeme afin d'etre traite
 et trasnformer en type system.
 
@@ -70,7 +76,8 @@ getInter.
 la fonction nthIter demande a l'utilisateur quelle iteration il/elle aimerait
 voir.
 
-** save.ml **
+**save.ml:**
+
 Le module save permet à l’utilisateur de créer un fichier contenant un nouvel
 L-Système.
 Elle contient plusieurs références :
@@ -94,7 +101,7 @@ Interprétation se charge d’affecter une commande a chaque symbole. (Line,move
 
 ##Organisation du travail
 
-** FELIX **
+**FELIX**
 Lors de ce projet, il s'est occupe de :
 * parser les fichier texte en L-Systeme
 * de calculer la ieme iteration d'un L-Systeme
@@ -102,6 +109,6 @@ Lors de ce projet, il s'est occupe de :
 * d'embelir les illustrations obtenu en ajoutant un peu de couleurs
 * et de sauvegarder une image
 
-** VINCENT **
+**VINCENT**
 Lors de ce projet, il s'est occupe de :
 * tout
