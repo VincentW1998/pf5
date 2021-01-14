@@ -102,8 +102,13 @@ let popStack pos =
 let minMaxOut = (fun min max b ->
     (min < 0) && (max > b))
 
+(** true if the min x or y is lower than 0**)
 let minOut = (fun min ->
     (min < 0))
+
+(** true if the max x or y is bigger than window**)
+let maxOut = (fun max ->
+    (max > size_x))
 
 (** add base to and last position, xmin or ymin**)
 let delta = (fun min pos base -> float_of_int(abs (min)) +. pos +. base)
@@ -126,24 +131,28 @@ let origine pos =
   let pos1 = if xmin < 0 then setPosX xmin pos 60. stackXmin else pos in
   if ymin < 0 then setPosY ymin pos 60. stackYmin else pos1
 
+
 let newFact pos facteur =
   let xmin = top stackXmin in
   let ymin = top stackYmin in
-  let xadd = if xmin < 0 then int_of_float (delta xmin pos.y 60.) else 0 in
-  let yadd = if ymin < 0 then int_of_float (delta ymin pos.x 60.) else 0 in
+  let xadd = if minOut xmin then int_of_float (delta xmin pos.y 60.) else 0 in
+  let yadd = if minOut ymin then int_of_float (delta ymin pos.x 60.) else 0 in
   let xmax = top stackXmax in
   let ymax = top stackYmax in
     clear stackYmax;
     clear stackXmax;
-    if (ymax + yadd > 600) || (xmax + xadd > 600) then
+    if (ymax + yadd > 600) || (xmax + xadd > 600) ||
+    (minMaxOut xmin xmax (size_x()) ) || (minMaxOut ymin ymax (size_y())) then
     facteur *. (1./.1.5) else facteur
 
 (** first analysis of the lsystem**)
 let rec firstPass command pos facteur =
   match command with
   | [] -> ()
-  | Line a :: l -> firstPass l (drawFake pos ((float_of_int a) *. facteur)) facteur
-  | Move a :: l -> firstPass l (move_point pos ((float_of_int a) *. facteur)) facteur
+  | Line a :: l ->
+  firstPass l (drawFake pos ((float_of_int a) *. facteur)) facteur
+  | Move a :: l ->
+  firstPass l (move_point pos ((float_of_int a) *. facteur)) facteur
   | Turn ang :: l -> firstPass l
   ({x = pos.x; y = pos.y; a = pos.a + ang}) facteur
   | Store :: l->  firstPass l (pushToStack pos) facteur
@@ -154,8 +163,10 @@ let rec firstPass command pos facteur =
 let rec turtleToGraphics command pos facteur =
   match command with
   | [] -> ()
-  | Line a :: l-> turtleToGraphics l  (draw_line pos ((float_of_int a) *. facteur)) facteur
-  | Move a :: l->  turtleToGraphics l (move_point pos ((float_of_int a) *. facteur)) facteur
+  | Line a :: l->
+  turtleToGraphics l  (draw_line pos ((float_of_int a) *. facteur)) facteur
+  | Move a :: l->
+  turtleToGraphics l (move_point pos ((float_of_int a) *. facteur)) facteur
   | Turn ang :: l-> turtleToGraphics l
   ({x = pos.x; y = pos.y; a = pos.a + ang}) facteur
   | Store :: l->  turtleToGraphics l (pushToStack pos) facteur
@@ -164,4 +175,5 @@ let rec turtleToGraphics command pos facteur =
 let getNewPosFacteur lcmd pos facteur=
   firstPass lcmd (move_point pos 0.) facteur;
   (origine pos, newFact pos facteur)
+
 
