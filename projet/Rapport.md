@@ -40,7 +40,18 @@ Puis executer l'executable:
 
 ##Découpage modulaire
 ** main.ml **
+Ce module contient la boucle interactive entre l'interface graphique et
+l'utilisateur.
+C'est aussi a partir de la, qu'on appelle toutes les fonctions permettant la
+generation d'un L-Systeme sous forme de `word` avec sa fonction de substitution,
+sa fonction d'interpretation et son axiome. Mais aussi l'affichage d'un
+L-Systeme
+
 ** turtle.ml **
+Ce module permet d'interpreter une liste de commande Turtle en commande
+graphics.
+Pour y parvenir il va falloir tout d'abord calculer les coordonnees des nouvelles
+positions, donc convertir correctement les int vers les float et inversement 
 ** system.ml **
 ** read.ml **
 Ce module permet de lire un fichier contenant un L-Systeme afin d'etre traite
