@@ -34,7 +34,7 @@ if i > n then () else
   Unix.sleepf 0.3;
   clear_graph();
   let newPos,newFacteur = getNewPosFacteur lcmd pos facteur in
-  turtleToGraphics lcmd (move_point newPos 0.) newFacteur;
+  turtleToGraphics lcmd (move_point newPos 0.) newFacteur i;
   synchronize();
   animation_loop (i+1) n newPos
 
@@ -48,6 +48,17 @@ let trace () =
   let n = nthIter() in
   animation n
 
+let trace2 () =
+  let n = nthIter() in
+  let pos = {x = 60.; y = 60.; a = 90} in
+  let nIter = substitution (getRules())
+              (createWord (explode (getAxiome()))) n in
+  let lcmd = interpWord (getInter()) (nIter) in
+  let facteur = (1. /. 3.) ** (float_of_int n) in
+  clear_graph();
+  let newPos, newFacteur = getNewPosFacteur lcmd pos facteur in
+  turtleToGraphics lcmd (move_point newPos 0.) newFacteur n
+
 
 (* keyStrokes listners  *)
  let rec loop ()=
@@ -55,7 +66,7 @@ let trace () =
   if event.keypressed
   then match event.key with
     |'o' -> let filename = fileName() in read_file filename ; loop()
-    |'t' -> trace(); loop()
+    |'t' -> trace2(); loop()
     |'c' -> clear_graph(); loop()
     |'q' -> close_graph ()
     |'n' -> writeFile(); loop()

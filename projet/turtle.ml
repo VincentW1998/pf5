@@ -1,5 +1,6 @@
 open Stack
 open Graphics
+open Unix
 
 type command =
 | Line of int
@@ -160,17 +161,18 @@ let rec firstPass command pos facteur =
 
 
 (* Interpret Turtle command to graphics command *)
-let rec turtleToGraphics command pos facteur =
+let rec turtleToGraphics command pos facteur n =
+  Unix.sleepf (0.005 *. (1./.2. ** (float_of_int n)));
   match command with
   | [] -> ()
   | Line a :: l->
-  turtleToGraphics l  (draw_line pos ((float_of_int a) *. facteur)) facteur
+  turtleToGraphics l  (draw_line pos ((float_of_int a) *. facteur)) facteur n
   | Move a :: l->
-  turtleToGraphics l (move_point pos ((float_of_int a) *. facteur)) facteur
+  turtleToGraphics l (move_point pos ((float_of_int a) *. facteur)) facteur n
   | Turn ang :: l-> turtleToGraphics l
-  ({x = pos.x; y = pos.y; a = pos.a + ang}) facteur
-  | Store :: l->  turtleToGraphics l (pushToStack pos) facteur
-  | Restore :: l-> turtleToGraphics l (popStack pos) facteur
+  ({x = pos.x; y = pos.y; a = pos.a + ang}) facteur n
+  | Store :: l->  turtleToGraphics l (pushToStack pos) facteur n
+  | Restore :: l-> turtleToGraphics l (popStack pos) facteur n
 
 let getNewPosFacteur lcmd pos facteur=
   firstPass lcmd (move_point pos 0.) facteur;

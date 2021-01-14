@@ -85,7 +85,7 @@ val newFact : position -> float -> float
 val firstPass : command list -> position -> float -> unit
 
 (* Interpret Turtle command to graphics command *)
-val turtleToGraphics : command list -> position -> float -> unit
+val turtleToGraphics : command list -> position -> float -> int -> unit
 
 val getNewPosFacteur : command list -> position -> float -> (position * float)
 
