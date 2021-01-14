@@ -96,7 +96,7 @@ let listPair listStr = listPair_loop [] listStr
 
 
 let rec rewrite_loop  c lr = match lr with
-  | [] -> raise Not_found
+  | [] -> raise (Not_found)
   | (a, b) :: t-> if a = c then  stringToWord b else rewrite_loop c t;;
 
 

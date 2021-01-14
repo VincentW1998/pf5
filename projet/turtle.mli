@@ -42,6 +42,8 @@ val cordinateX : position -> float -> int
 (* Polar cordinate to cartesian for axe Y *)
 val cordinateY : position -> float -> int
 
+val cordinate : float -> int -> float -> (float -> float) -> int
+
 (* Polar cordinate to cartesian for axe X and Y *)
 val cordinateXY : position -> float -> int * int
 

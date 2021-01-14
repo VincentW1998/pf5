@@ -49,6 +49,9 @@ let cordinateX p length =
 let cordinateY p length =
   int_of_float (p.y) + roundFloat(length *. sin (degreeToRad p.a))
 
+let cordinate p a length f =
+  int_of_float p + roundFloat(length *. f(degreeToRad a))
+
 (* Polar cordinate to cartesian for axe X and Y *)
 let cordinateXY p length =
   let x1 = cordinateX p length and
@@ -57,7 +60,8 @@ let cordinateXY p length =
 
 (* draw line with Graphics.lineto *)
 let draw_line pos taille =
-  let (x1, y1)  = cordinateXY pos taille in lineto x1 y1;
+let taille2 = if taille < 1. then 1. else taille in
+  let (x1, y1)  = cordinateXY pos taille2 in lineto x1 y1;
   {x = (float_of_int x1); y = (float_of_int y1); a = pos.a};;
 
 (* initiate the stack of min value*)
@@ -76,6 +80,7 @@ let initStack x1 y1 =
 
 (** fake lineto **)
 let drawFake pos taille =
+  let taille2 = if taille < 1. then 1. else taille in
   let (x1, y1) = cordinateXY pos taille in
     initStack x1 y1;
     {x = (float_of_int x1); y = (float_of_int y1); a = pos.a};;
@@ -130,7 +135,7 @@ let newFact pos facteur =
   let ymax = top stackYmax in
     clear stackYmax;
     clear stackXmax;
-    if (ymax + yadd > 540) || (xmax + xadd > 540) then
+    if (ymax + yadd > 600) || (xmax + xadd > 600) then
     facteur *. (1./.1.5) else facteur
 
 (** first analysis of the lsystem**)

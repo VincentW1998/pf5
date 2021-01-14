@@ -40,7 +40,7 @@ if i > n then () else
 
 (**animation**)
 let animation n =
-  let pos = {x = 60.; y = 60.; a = 0} in
+  let pos = {x = 60.; y = 60.; a = 90} in
     animation_loop 0 n pos
 
 (**draw n iteration about one Lsystem with animation**)
