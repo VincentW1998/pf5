@@ -23,35 +23,20 @@ let cmdline_options = [
 
 let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
-
-(**draw the Lsystem **)
-(**let trace () =
-  let n = nthIter() in
-  let niter = substitution (getRules())
-              (createWord (explode (getAxiome()))) n in
-  let lcmd = interpWord (getInter()) (niter) in
-  clear_graph();
-  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.) **)
-
-(** **)
-
-
 (**fonction auxiliare pour la fonction animation**)
 let rec animation_loop i n pos =
 if i > n then () else
   let niter = substitution (getRules())
               (createWord (explode (getAxiome()))) i in
   let lcmd = interpWord (getInter()) (niter) in
-  let facteur = 1. /. 3. ** (float_of_int i) in
+  let facteur = (1. /. 3.) ** (float_of_int i) in
   auto_synchronize false;
   Unix.sleepf 0.3;
   clear_graph();
-  firstPass lcmd (move_point pos 0.) facteur;
-  let newPos = origine pos in
-  turtleToGraphics lcmd (move_point newPos 0.) facteur;
+  let newPos,newFacteur = getNewPosFacteur lcmd pos facteur in
+  turtleToGraphics lcmd (move_point newPos 0.) newFacteur;
   synchronize();
   animation_loop (i+1) n newPos
-
 
 (**animation**)
 let animation n =
@@ -83,7 +68,7 @@ let trace () =
 let main () =
   Arg.parse cmdline_options extra_arg_action usage;
   open_graph " 600x600";
-  set_window_title "Felix le Boss";
+  set_window_title "L-Systeme";
   loop ();
   print_string "Bye\n"
 
