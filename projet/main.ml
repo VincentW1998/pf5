@@ -23,35 +23,41 @@ let cmdline_options = [
 
 let extra_arg_action = fun s -> failwith ("Argument inconnu :"^s)
 
-(**draw the Lsystem **)
-let trace () =
-  let n = nthIter() in
-  let niter = substitution (getRules())
-              (createWord (explode (getAxiome()))) n in
-  let lcmd = interpWord (getInter()) (niter) in
-  clear_graph();
-  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.)
-
 (**fonction auxiliare pour la fonction animation**)
-let rec animation_loop i n =
+let rec animation_loop i n pos =
 if i > n then () else
   let niter = substitution (getRules())
               (createWord (explode (getAxiome()))) i in
   let lcmd = interpWord (getInter()) (niter) in
+  let facteur = (1. /. 3.) ** (float_of_int i) in
   auto_synchronize false;
   Unix.sleepf 0.3;
   clear_graph();
-  turtleToGraphics lcmd (move_point ({x = 400.; y = 10.; a = 90}) 0.);
+  let newPos,newFacteur = getNewPosFacteur lcmd pos facteur in
+  turtleToGraphics lcmd (move_point newPos 0.) newFacteur i;
   synchronize();
-  animation_loop (i+1) n
+  animation_loop (i+1) n newPos
 
 (**animation**)
-let animation n = animation_loop 0 n
+let animation n =
+  let pos = {x = 60.; y = 60.; a = 90} in
+    animation_loop 0 n pos
 
 (**draw n iteration about one Lsystem with animation**)
-let trace2 () =
+let trace () =
   let n = nthIter() in
   animation n
+
+let trace2 () =
+  let n = nthIter() in
+  let pos = {x = 60.; y = 60.; a = 90} in
+  let nIter = substitution (getRules())
+              (createWord (explode (getAxiome()))) n in
+  let lcmd = interpWord (getInter()) (nIter) in
+  let facteur = (1. /. 3.) ** (float_of_int n) in
+  clear_graph();
+  let newPos, newFacteur = getNewPosFacteur lcmd pos facteur in
+  turtleToGraphics lcmd (move_point newPos 0.) newFacteur n
 
 
 (* keyStrokes listners  *)
@@ -68,12 +74,10 @@ let trace2 () =
   else loop ()
 
 
-
-
 let main () =
   Arg.parse cmdline_options extra_arg_action usage;
-  open_graph " 500x500";
-  set_window_title "Felix le Boss";
+  open_graph " 600x600";
+  set_window_title "L-Systeme";
   loop ();
   print_string "Bye\n"
 
@@ -81,5 +85,5 @@ let main () =
     (c'est-à-dire que l'on est pas dans un "toplevel" ocaml interactif).
     Sinon c'est au programmeur de lancer ce qu'il veut *)
 
-
+let () = Printexc.record_backtrace true
 let () = if not !Sys.interactive then main ()

@@ -19,6 +19,14 @@ type position = {
 (* New stack, initially empty *)
 val stackOfPos : position Stack.t
 
+val stackXmin : int Stack.t
+
+val stackYmin : int Stack.t
+
+val stackXmax : int Stack.t
+
+val stackYmax : int Stack.t
+
 (** get the sign of x and add this sign to 0.5**)
 val getSign : float -> float
 
@@ -34,11 +42,21 @@ val cordinateX : position -> float -> int
 (* Polar cordinate to cartesian for axe Y *)
 val cordinateY : position -> float -> int
 
+val cordinate : float -> int -> float -> (float -> float) -> int
+
 (* Polar cordinate to cartesian for axe X and Y *)
 val cordinateXY : position -> float -> int * int
 
 (* draw line with Graphics.lineto *)
 val draw_line : position -> float -> position
+
+val initStackMin : int Stack.t -> int -> unit
+
+val initStackMax : int Stack.t -> int -> unit
+
+val initStack : int -> int -> unit
+
+val drawFake : position -> float -> position
 
 (* move the current point *)
 val move_point : position -> float -> position
@@ -49,12 +67,25 @@ val pushToStack : position -> position
 (* remove pos from Stack *)
 val popStack : 'a -> position
 
-val depassement : unit -> unit
-
 (** true if the min and the max is out of window **)
 val minMaxOut : int -> int -> int -> bool
 
-(* Interpret Turtle command to graphics command *)
-val turtleToGraphics : command list -> position -> unit
+val minOut : int -> bool
 
+val delta : int -> float -> float -> float
+
+val setPosX : int -> position -> float -> int Stack.t -> position
+
+val setPosY : int -> position -> float -> int Stack.t -> position
+
+val origine : position -> position
+
+val newFact : position -> float -> float
+
+val firstPass : command list -> position -> float -> unit
+
+(* Interpret Turtle command to graphics command *)
+val turtleToGraphics : command list -> position -> float -> int -> unit
+
+val getNewPosFacteur : command list -> position -> float -> (position * float)
 

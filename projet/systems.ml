@@ -1,6 +1,5 @@
 open List
 open Turtle
-(* open Read *)
 (** Words, rewrite systems, and rewriting *)
 
 type 's word =
@@ -71,7 +70,6 @@ let rec createWord_loop (accu : 'a list) = function
   | h :: t -> createWord_loop (Symb h :: accu) t
 
 (** function return a char word from  'a list**)
-
 let createWord cl = Seq (createWord_loop [] cl)
 
 (** funtion return 's word from string **)
@@ -97,9 +95,8 @@ let listPair listStr = listPair_loop [] listStr
 
 
 let rec rewrite_loop  c lr = match lr with
-  | [] -> raise Not_found
+  | [] -> raise (Not_found)
   | (a, b) :: t-> if a = c then  stringToWord b else rewrite_loop c t;;
-
 
 
 let rec inter_loop  c li= match li with
@@ -108,13 +105,6 @@ let rec inter_loop  c li= match li with
         let i = int_of_string (String.sub b 1 (String.length b - 1)) in
         let firstChar = String.get b 0 in
         charToCommand i firstChar else inter_loop c t
-
-
-(**create a Lsys from a string **)
-(**let createLsys ax = {
-  axiom = stringToWord ax;
-  rules = rewriteFunc;
-  interp = interFunc }*)
 
 (**function rewrite 's word with rules**)
 let rewrite lr=
@@ -142,6 +132,5 @@ let rec interpWord li = function
   |Symb s -> interp li s
   |Seq s -> concat(map(interpWord li) s)
   |Branch s -> [Store] @ (interpWord li s) @ [Restore]
-
 
 
